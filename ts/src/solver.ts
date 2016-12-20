@@ -6,13 +6,6 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-/// <reference path="../thirdparty/tsu.d.ts"/>
-/// <reference path="constraint.ts"/>
-/// <reference path="expression.ts"/>
-/// <reference path="maptype.ts"/>
-/// <reference path="strength.ts"/>
-/// <reference path="variable.ts"/>
-
 module kiwi
 {
 

@@ -6,8 +6,6 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-/// <reference path="../thirdparty/tsu.d.ts"/>
-
 module kiwi
 {
 

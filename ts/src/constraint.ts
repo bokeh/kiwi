@@ -6,9 +6,6 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-// <reference path="expression.ts">
-// <reference path="strength.ts">
-
 module kiwi
 {
 
