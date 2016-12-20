@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noEmitOnError": true,
+    "target": "ES5",
+    "outFile": "./dist/kiwi.js",
+    "declaration": true
+  },
+  "include": [
+    "./src/*.ts"
+  ]
+}
