@@ -3,5 +3,4 @@
 *.so
 
 build/
-dist/
 kiwisolver.egg-info/
