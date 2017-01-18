@@ -13,8 +13,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "build": "./node_modules/.bin/tsc",
-    "postinstall": "./node_modules/.bin/tsc"
+    "postinstall": "./node_modules/.bin/tsc && echo 'module.exports = kiwi;' >> dist/kiwi.js"
   },
   "main": "dist/kiwi.js"
 }
