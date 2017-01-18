@@ -54,7 +54,12 @@ module kiwi
             {
                 if( !nearZero( row.constant() ) )
                 {
-                    throw new Error( "unsatifiable constraint" );
+                    const names = []
+                    for (const item of constraint.expression().terms()._array) {
+                        names.push(item.first.name());
+                    }
+                    const op = ['LE', 'GE', 'EQ'][constraint.op()];
+                    throw new Error(`unsatisfiable constraint [${names.join(",")}] operator: ${op}`);
                 }
                 else
                 {
@@ -141,7 +146,7 @@ module kiwi
             var editPair = this._editMap.find( variable );
             if( editPair !== undefined )
             {
-                throw new Error( "duplicate edit variable" );
+                throw new Error(`duplicate edit variable: ${variable.name()}`);
             }
             strength = Strength.clip( strength );
             if( strength === Strength.required )
@@ -164,7 +169,7 @@ module kiwi
             var editPair = this._editMap.erase( variable );
             if( editPair === undefined )
             {
-                throw new Error( "unknown edit variable" );
+                throw new Error(`unknown edit variable: ${variable.name()}`);
             }
             this.removeConstraint( editPair.second.constraint );
         }
@@ -185,7 +190,7 @@ module kiwi
             var editPair = this._editMap.find( variable );
             if( editPair === undefined )
             {
-                throw new Error( "unknown edit variable" );
+                throw new Error(`unknown edit variable: ${variable.name()}`);
             }
 
             var rows = this._rowMap;
