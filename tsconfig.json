@@ -3,7 +3,7 @@
     "noImplicitAny": true,
     "noEmitOnError": true,
     "target": "ES5",
-    "outFile": "./dist/kiwi.js",
+    "outFile": "./index.js",
     "declaration": true
   },
   "include": [
