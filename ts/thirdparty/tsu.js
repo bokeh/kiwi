@@ -7,11 +7,11 @@
 |----------------------------------------------------------------------------*/
 var tsu;
 (function (tsu) {
-    
 
-    
 
-    
+
+
+
 
     /**
     * An iterator for an array of items.
@@ -77,7 +77,7 @@ var tsu;
     })();
     tsu.ReverseArrayIterator = ReverseArrayIterator;
 
-    
+
 
     function iter(object) {
         if (object instanceof Array) {
@@ -87,7 +87,7 @@ var tsu;
     }
     tsu.iter = iter;
 
-    
+
 
     function reversed(object) {
         if (object instanceof Array) {
@@ -105,7 +105,7 @@ var tsu;
     }
     tsu.next = next;
 
-    
+
 
     function asArray(object) {
         if (object instanceof Array) {
@@ -121,7 +121,7 @@ var tsu;
     }
     tsu.asArray = asArray;
 
-    
+
 
     function forEach(object, callback) {
         if (object instanceof Array) {
@@ -142,7 +142,7 @@ var tsu;
     }
     tsu.forEach = forEach;
 
-    
+
 
     function map(object, callback) {
         var result = [];
@@ -161,7 +161,7 @@ var tsu;
     }
     tsu.map = map;
 
-    
+
 
     function filter(object, callback) {
         var value;
@@ -194,7 +194,7 @@ var tsu;
 |----------------------------------------------------------------------------*/
 var tsu;
 (function (tsu) {
-    
+
 
     /**
     * A class which defines a generic pair object.
@@ -301,7 +301,7 @@ var tsu;
     }
     tsu.binaryFind = binaryFind;
 
-    
+
 
     function asSet(items, compare) {
         var array = tsu.asArray(items);
@@ -837,194 +837,6 @@ var tsu;
 |----------------------------------------------------------------------------*/
 /// <reference path="algorithm.ts"/>
 /// <reference path="array_base.ts"/>
-/// <reference path="iterator.ts"/>
-/// <reference path="utility.ts"/>
-var tsu;
-(function (tsu) {
-    /**
-    * A set container built on a sorted array.
-    *
-    * @class
-    */
-    var UniqueArray = (function (_super) {
-        __extends(UniqueArray, _super);
-        /**
-        * Construct a new UniqueArray.
-        *
-        * @param compare The item comparison function.
-        */
-        function UniqueArray(compare) {
-            _super.call(this);
-            this._compare = compare;
-        }
-        /**
-        * Returns the comparison function for this array.
-        */
-        UniqueArray.prototype.comparitor = function () {
-            return this._compare;
-        };
-
-        /**
-        * Return the array index of the given item, or -1.
-        *
-        * @param item The item to locate in the array.
-        */
-        UniqueArray.prototype.indexOf = function (item) {
-            return tsu.binarySearch(this._array, item, this._compare);
-        };
-
-        /**
-        * Returns true if the item is in the array, false otherwise.
-        *
-        * @param item The item to locate in the array.
-        */
-        UniqueArray.prototype.contains = function (item) {
-            return tsu.binarySearch(this._array, item, this._compare) >= 0;
-        };
-
-        /**
-        * Insert an item into the array.
-        *
-        * Returns true if the item is new to the set, false otherwise.
-        *
-        * @param item The item to insert into the array.
-        */
-        UniqueArray.prototype.insert = function (item) {
-            var array = this._array;
-            var index = tsu.lowerBound(array, item, this._compare);
-            if (index === array.length) {
-                array.push(item);
-                return true;
-            }
-            if (this._compare(array[index], item) !== 0) {
-                array.splice(index, 0, item);
-                return true;
-            }
-            return false;
-        };
-
-        /**
-        * Remove an item from the array.
-        *
-        * Returns true if the item was removed, false otherwise.
-        *
-        * @param item The item to remove from the array.
-        */
-        UniqueArray.prototype.erase = function (item) {
-            var array = this._array;
-            var index = tsu.binarySearch(array, item, this._compare);
-            if (index < 0) {
-                return false;
-            }
-            array.splice(index, 1);
-            return true;
-        };
-
-        /**
-        * Create a copy of this unique array.
-        */
-        UniqueArray.prototype.copy = function () {
-            var theCopy = new UniqueArray(this._compare);
-            theCopy._array = this._array.slice();
-            return theCopy;
-        };
-
-        UniqueArray.prototype.isDisjoint = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            return tsu.setIsDisjoint(this._array, other, cmp);
-        };
-
-        UniqueArray.prototype.isSubset = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            return tsu.setIsSubset(this._array, other, cmp);
-        };
-
-        UniqueArray.prototype.isSuperset = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            return tsu.setIsSubset(other, this._array, cmp);
-        };
-
-        UniqueArray.prototype.union = function (object) {
-            var cmp = this._compare;
-            var res = new UniqueArray(cmp);
-            var other = toSet(object, cmp);
-            res._array = tsu.setUnion(this._array, other, cmp);
-            return res;
-        };
-
-        UniqueArray.prototype.intersection = function (object) {
-            var cmp = this._compare;
-            var res = new UniqueArray(cmp);
-            var other = toSet(object, cmp);
-            res._array = tsu.setIntersection(this._array, other, cmp);
-            return res;
-        };
-
-        UniqueArray.prototype.difference = function (object) {
-            var cmp = this._compare;
-            var res = new UniqueArray(cmp);
-            var other = toSet(object, cmp);
-            res._array = tsu.setDifference(this._array, other, cmp);
-            return res;
-        };
-
-        UniqueArray.prototype.symmetricDifference = function (object) {
-            var cmp = this._compare;
-            var res = new UniqueArray(cmp);
-            var other = toSet(object, cmp);
-            res._array = tsu.setSymmetricDifference(this._array, other, cmp);
-            return res;
-        };
-
-        UniqueArray.prototype.unionUpdate = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            this._array = tsu.setUnion(this._array, other, cmp);
-        };
-
-        UniqueArray.prototype.intersectionUpdate = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            this._array = tsu.setIntersection(this._array, other, cmp);
-        };
-
-        UniqueArray.prototype.differenceUpdate = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            this._array = tsu.setDifference(this._array, other, cmp);
-        };
-
-        UniqueArray.prototype.symmetricDifferenceUpdate = function (object) {
-            var cmp = this._compare;
-            var other = toSet(object, cmp);
-            this._array = tsu.setSymmetricDifference(this._array, other, cmp);
-        };
-        return UniqueArray;
-    })(tsu.ArrayBase);
-    tsu.UniqueArray = UniqueArray;
-
-    
-
-    function toSet(arg, cmp) {
-        if (arg instanceof UniqueArray) {
-            return arg._array;
-        }
-        return tsu.asSet(arg, cmp);
-    }
-})(tsu || (tsu = {}));
-/*-----------------------------------------------------------------------------
-| Copyright (c) 2014, Nucleic Development Team.
-|
-| Distributed under the terms of the Modified BSD License.
-|
-| The full license is in the file COPYING.txt, distributed with this software.
-|----------------------------------------------------------------------------*/
-/// <reference path="algorithm.ts"/>
-/// <reference path="array_base.ts"/>
 /// <reference path="associative_array.ts"/>
 /// <reference path="iterator.ts"/>
-/// <reference path="unique_array.ts"/>
 /// <reference path="utility.ts"/>
