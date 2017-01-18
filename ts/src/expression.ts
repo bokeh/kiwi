@@ -60,10 +60,9 @@ module kiwi
         value(): number
         {
             var result = this._constant;
-            tsu.forEach( this._terms, ( pair ) =>
-            {
+            tsu.forEach<tsu.Pair<Variable, number>>(this._terms, (pair) => {
                 result += pair.first.value() * pair.second;
-            } );
+            });
             return result;
         }
 
