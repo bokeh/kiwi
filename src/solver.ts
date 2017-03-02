@@ -95,12 +95,15 @@ module kiwi
         /**
          * Remove a constraint from the solver.
          */
-        removeConstraint( constraint: Constraint ): void
+        removeConstraint( constraint: Constraint, silent: boolean = false ): void
         {
             var cnPair = this._cnMap.erase( constraint );
             if( cnPair === undefined )
             {
-                throw new Error( "unknown constraint" );
+                if (silent)
+                  return
+                else
+                  throw new Error( "unknown constraint" );
             }
 
             // Remove the error effects from the objective function
@@ -164,14 +167,17 @@ module kiwi
         /**
          * Remove an edit variable from the solver.
          */
-        removeEditVariable( variable: Variable ): void
+        removeEditVariable( variable: Variable, silent: boolean = false ): void
         {
             var editPair = this._editMap.erase( variable );
             if( editPair === undefined )
             {
-                throw new Error(`unknown edit variable: ${variable.name()}`);
+                if (silent)
+                  return
+                else
+                  throw new Error(`unknown edit variable: ${variable.name()}`);
             }
-            this.removeConstraint( editPair.second.constraint );
+            this.removeConstraint( editPair.second.constraint, silent );
         }
 
         /**
