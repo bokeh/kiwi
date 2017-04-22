@@ -120,7 +120,7 @@ module kiwi
             }
             else
             {
-                throw new Error( "invalid Expression argument: " + item );
+                throw new Error( "invalid Expression argument: " + JSON.stringify(item) );
             }
         }
         return { terms: terms, constant: constant };
