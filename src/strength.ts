@@ -28,26 +28,22 @@ module kiwi
         /**
          * The 'required' symbolic strength.
          */
-        export
-        var required = create( 1000.0, 1000.0, 1000.0 );
+        export const required = create( 1000.0, 1000.0, 1000.0 );
 
         /**
          * The 'strong' symbolic strength.
          */
-        export
-        var strong = create( 1.0, 0.0, 0.0 );
+        export const strong = create( 1.0, 0.0, 0.0 );
 
         /**
          * The 'medium' symbolic strength.
          */
-        export
-        var medium = create( 0.0, 1.0, 0.0 );
+        export const medium = create( 0.0, 1.0, 0.0 );
 
         /**
          * The 'weak' symbolic strength.
          */
-        export
-        var weak = create( 0.0, 0.0, 1.0 );
+        export const weak = create( 0.0, 0.0, 1.0 );
 
         /**
          * Clip a symbolic strength to the allowed min and max.

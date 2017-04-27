@@ -55,10 +55,10 @@ module kiwi
                 if( !nearZero( row.constant() ) )
                 {
                     const names = []
-                    for (const item of constraint.expression().terms()._array) {
-                        names.push(item.first.name());
+                    for (const item of constraint.expression.terms._array) {
+                        names.push(item.first.name);
                     }
-                    const op = ['LE', 'GE', 'EQ'][constraint.op()];
+                    const op = ['LE', 'GE', 'EQ'][constraint.op];
                     throw new Error(`unsatisfiable constraint [${names.join(",")}] operator: ${op}`);
                 }
                 else
@@ -149,7 +149,7 @@ module kiwi
             var editPair = this._editMap.find( variable );
             if( editPair !== undefined )
             {
-                throw new Error(`duplicate edit variable: ${variable.name()}`);
+                throw new Error(`duplicate edit variable: ${variable.name}`);
             }
             strength = Strength.clip( strength );
             if( strength === Strength.required )
@@ -175,7 +175,7 @@ module kiwi
                 if (silent)
                   return
                 else
-                  throw new Error(`unknown edit variable: ${variable.name()}`);
+                  throw new Error(`unknown edit variable: ${variable.name}`);
             }
             this.removeConstraint( editPair.second.constraint, silent );
         }
@@ -196,7 +196,7 @@ module kiwi
             var editPair = this._editMap.find( variable );
             if( editPair === undefined )
             {
-                throw new Error(`unknown edit variable: ${variable.name()}`);
+                throw new Error(`unknown edit variable: ${variable.name}`);
             }
 
             var rows = this._rowMap;
@@ -296,11 +296,11 @@ module kiwi
          */
         private _createRow( constraint: Constraint ): IRowCreation
         {
-            var expr = constraint.expression();
-            var row = new Row( expr.constant() );
+            var expr = constraint.expression;
+            var row = new Row( expr.constant );
 
             // Substitute the current basic variables into the row.
-            var terms = expr.terms();
+            var terms = expr.terms;
             for( var i = 0, n = terms.size(); i < n; ++i )
             {
                 var termPair = terms.itemAt( i );
@@ -321,14 +321,14 @@ module kiwi
 
             // Add the necessary slack, error, and dummy variables.
             var objective = this._objective;
-            var strength = constraint.strength();
+            var strength = constraint.strength;
             var tag = { marker: INVALID_SYMBOL, other: INVALID_SYMBOL };
-            switch( constraint.op() )
+            switch( constraint.op )
             {
                 case Operator.Le:
                 case Operator.Ge:
                 {
-                    var coeff = constraint.op() === Operator.Le ? 1.0 : -1.0;
+                    var coeff = constraint.op === Operator.Le ? 1.0 : -1.0;
                     var slack = this._makeSymbol( SymbolType.Slack );
                     tag.marker = slack;
                     row.insertSymbol( slack, coeff );
@@ -723,11 +723,11 @@ module kiwi
         {
             if( tag.marker.type() === SymbolType.Error )
             {
-                this._removeMarkerEffects( tag.marker, cn.strength() );
+                this._removeMarkerEffects( tag.marker, cn.strength );
             }
             if( tag.other.type() === SymbolType.Error )
             {
-                this._removeMarkerEffects( tag.other, cn.strength() );
+                this._removeMarkerEffects( tag.other, cn.strength );
             }
         }
 

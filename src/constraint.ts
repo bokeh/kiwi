@@ -37,7 +37,7 @@ module kiwi
          */
         static Compare( a: Constraint, b: Constraint ): number
         {
-            return a.id() - b.id();
+            return a.id - b.id;
         }
 
         /**
@@ -60,7 +60,7 @@ module kiwi
         /**
          * Returns the unique id number of the constraint.
          */
-        id(): number
+        get id(): number
         {
             return this._id;
         }
@@ -68,7 +68,7 @@ module kiwi
         /**
          * Returns the expression of the constraint.
          */
-        expression(): Expression
+        get expression(): Expression
         {
             return this._expression;
         }
@@ -76,7 +76,7 @@ module kiwi
         /**
          * Returns the relational operator of the constraint.
          */
-        op(): Operator
+        get op(): Operator
         {
             return this._operator;
         }
@@ -84,7 +84,7 @@ module kiwi
         /**
          * Returns the strength of the constraint.
          */
-        strength(): number
+        get strength(): number
         {
             return this._strength;
         }

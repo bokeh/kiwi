@@ -41,7 +41,7 @@ module kiwi
          *
          * This *must* be treated as const.
          */
-        terms(): IMap<Variable, number>
+        get terms(): IMap<Variable, number>
         {
             return this._terms;
         }
@@ -49,7 +49,7 @@ module kiwi
         /**
          * Returns the constant of the expression.
          */
-        constant(): number
+        get constant(): number
         {
             return this._constant;
         }
@@ -57,11 +57,11 @@ module kiwi
         /**
          * Returns the computed value of the expression.
          */
-        value(): number
+        get value(): number
         {
             var result = this._constant;
             tsu.forEach<tsu.Pair<Variable, number>>(this._terms, (pair) => {
-                result += pair.first.value() * pair.second;
+                result += pair.first.value * pair.second;
             });
             return result;
         }

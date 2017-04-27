@@ -21,7 +21,7 @@ module kiwi
          */
         static Compare( a: Variable, b: Variable ): number
         {
-            return a.id() - b.id();
+            return a.id - b.id;
         }
 
         /**
@@ -37,7 +37,7 @@ module kiwi
         /**
          * Returns the unique id number of the variable.
          */
-        id(): number
+        get id(): number
         {
             return this._id;
         }
@@ -45,7 +45,7 @@ module kiwi
         /**
          * Returns the name of the variable.
          */
-        name(): string
+        get name(): string
         {
             return this._name;
         }
@@ -61,7 +61,7 @@ module kiwi
         /**
          * Returns the user context object of the variable.
          */
-        context(): any
+        get context(): any
         {
             return this._context;
         }
@@ -77,7 +77,7 @@ module kiwi
         /**
          * Returns the value of the variable.
          */
-        value(): number
+        get value(): number
         {
             return this._value;
         }
