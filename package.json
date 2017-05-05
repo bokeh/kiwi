@@ -15,5 +15,6 @@
   "scripts": {
     "build": "./node_modules/.bin/tsc"
   },
-  "main": "build/index.js"
+  "main": "build/index.js",
+  "types": "build/index.d.ts"
 }
