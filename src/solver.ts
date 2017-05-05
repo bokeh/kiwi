@@ -269,6 +269,14 @@ export class Solver
         }
     }
 
+    get numConstraints(): number {
+      return this._cnMap.size()
+    }
+
+    get numEditVariables(): number {
+      return this._editMap.size()
+    }
+
     /**
      * Get the symbol for the given variable.
      *
