@@ -6,4 +6,8 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-module kiwi { }
+export * from "./variable"
+export * from "./expression"
+export * from "./constraint"
+export * from "./strength"
+export * from "./solver"

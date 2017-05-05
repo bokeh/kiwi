@@ -9,11 +9,11 @@
     "url": "https://github.com/nucleic/kiwi.git"
   },
   "devDependencies": {
-    "typescript": "^2.1.0"
+    "typescript": "^2.3.0"
   },
   "dependencies": {},
   "scripts": {
-    "postinstall": "./node_modules/.bin/tsc && echo 'module.exports = kiwi;' >> index.js"
+    "build": "./node_modules/.bin/tsc"
   },
-  "main": "index.js"
+  "main": "build/index.js"
 }

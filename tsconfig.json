@@ -3,8 +3,10 @@
     "noImplicitAny": true,
     "noEmitOnError": true,
     "target": "ES5",
-    "outFile": "./index.js",
-    "declaration": true
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "build"
   },
   "include": [
     "./src/**/*.ts"
