@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "noEmitOnError": true,
+    "types": [],
     "target": "ES5",
     "module": "commonjs",
     "moduleResolution": "node",
