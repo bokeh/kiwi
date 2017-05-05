@@ -1,6 +1,6 @@
 {
   "name": "kiwi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Kiwi is an efficient implementation of the Cassowary constraint solving algorithm.",
   "keywords": [],
   "license": "BSD-3-Clause",
