@@ -6,10 +6,8 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-import {Variable} from "./variable"
 import {Expression} from "./expression"
 import {Strength} from "./strength"
-import {IMap, createMap} from "./maptype"
 
 /**
  * An enum defining the linear constraint operators.

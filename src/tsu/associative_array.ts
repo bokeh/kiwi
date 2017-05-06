@@ -57,7 +57,7 @@ export class AssociativeArray<T, U> extends ArrayBase<Pair<T, U>> {
     *
     * @param key The key to locate in the array.
     */
-    public find(key: T): Pair<T, U> {
+    public find(key: T): Pair<T, U> | undefined {
         return binaryFind(this._array, key, this._wrapped);
     }
 
@@ -128,7 +128,7 @@ export class AssociativeArray<T, U> extends ArrayBase<Pair<T, U>> {
     *
     * @param key The key to remove from the map.
     */
-    public erase(key: T): Pair<T, U> {
+    public erase(key: T): Pair<T, U> | undefined {
         var array = this._array;
         var index = binarySearch(array, key, this._wrapped);
         if (index < 0) {

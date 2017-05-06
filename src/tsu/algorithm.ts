@@ -64,7 +64,7 @@ export function binarySearch<T, U>(array: T[], value: U, compare: ICompare<T, U>
 * @param compare The value comparison function.
 * @returns The found item in the array, or undefined.
 */
-export function binaryFind<T, U>(array: T[], value: U, compare: ICompare<T, U>): T {
+export function binaryFind<T, U>(array: T[], value: U, compare: ICompare<T, U>): T | undefined {
     var index = lowerBound(array, value, compare);
     if (index === array.length) {
         return undefined;

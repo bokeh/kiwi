@@ -124,7 +124,7 @@ export class Solver
             {
                 throw new Error( "failed to find leaving row" );
             }
-            rowPair = this._rowMap.erase( leaving );
+            rowPair = this._rowMap.erase( leaving )!;
             rowPair.second.solveForEx( leaving, marker );
             this._substitute( marker, rowPair.second );
         }
@@ -161,7 +161,7 @@ export class Solver
         var expr = new Expression( variable );
         var cn = new Constraint( expr, Operator.Eq, strength );
         this.addConstraint( cn );
-        var tag = this._cnMap.find( cn ).second;
+        var tag = this._cnMap.find( cn )!.second;
         var info = { tag: tag, constraint: cn, constant: 0.0 };
         this._editMap.insert( variable, info );
     }
@@ -208,7 +208,7 @@ export class Solver
 
         // Check first if the positive error variable is basic.
         var marker = info.tag.marker;
-        var rowPair = rows.find( marker );
+        let rowPair = rows.find( marker );
         if( rowPair !== undefined )
         {
             if( rowPair.second.add( -delta ) < 0.0 )
@@ -221,7 +221,7 @@ export class Solver
 
         // Check next if the negative error variable is basic.
         var other = info.tag.other;
-        var rowPair = rows.find( other );
+            rowPair = rows.find( other );
         if( rowPair !== undefined )
         {
             if( rowPair.second.add( delta ) < 0.0 )
@@ -235,7 +235,7 @@ export class Solver
         // Otherwise update each row where the error variables exist.
         for( var i = 0, n = rows.size(); i < n; ++i )
         {
-            var rowPair = rows.itemAt( i );
+            let rowPair = rows.itemAt( i );
             var row = rowPair.second;
             var coeff = row.coefficientFor( marker );
             if( coeff !== 0.0 && row.add( delta * coeff ) < 0.0 &&
@@ -522,7 +522,7 @@ export class Solver
                 throw new Error( "the objective is unbounded" );
             }
             // pivot the entering symbol into the basis
-            var row = this._rowMap.erase( leaving ).second;
+            var row = this._rowMap.erase( leaving )!.second;
             row.solveForEx( leaving, entering );
             this._substitute( entering, row );
             this._rowMap.insert( entering, row );
@@ -543,7 +543,7 @@ export class Solver
         var infeasible = this._infeasibleRows;
         while( infeasible.length !== 0 )
         {
-            var leaving = infeasible.pop();
+            var leaving = infeasible.pop()!;
             var pair = rows.find( leaving );
             if( pair !== undefined && pair.second.constant() < 0.0 )
             {
@@ -791,7 +791,7 @@ export class Solver
     private _editMap = createEditMap();
     private _infeasibleRows: Symbol[] = [];
     private _objective: Row = new Row();
-    private _artificial: Row = null;
+    private _artificial: Row|null = null;
     private _idTick: number = 0;
 }
 
@@ -1084,7 +1084,7 @@ class Row
     solveFor( symbol: Symbol ): void
     {
         var cells = this._cellMap;
-        var pair = cells.erase( symbol );
+        var pair = cells.erase( symbol )!;
         var coeff = -1.0 / pair.second;
         this._constant *= coeff;
         for( var i = 0, n = cells.size(); i < n; ++i )
