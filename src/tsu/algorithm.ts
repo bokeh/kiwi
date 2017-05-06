@@ -6,290 +6,291 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-module tsu {
-    /**
-    * Perform a lower bound search on a sorted array.
-    *
-    * @param array The array of sorted items to search.
-    * @param value The value to located in the array.
-    * @param compare The value comparison function.
-    * @returns The index of the first element in the array which
-    *          compares greater than or equal to the given value.
-    */
-    export function lowerBound<T, U>(array: T[], value: U, compare: ICompare<T, U>): number {
-        var begin = 0;
-        var n = array.length;
-        var half;
-        var middle;
-        while (n > 0) {
-            half = n >> 1;
-            middle = begin + half;
-            if (compare(array[middle], value) < 0) {
-                begin = middle + 1;
-                n -= half + 1;
-            } else {
-                n = half;
-            }
-        }
-        return begin;
-    }
+import {ICompare} from "./pair"
+import {IIterable, asArray} from "./iterator"
 
-    /**
-    * Perform a binary search on a sorted array.
-    *
-    * @param array The array of sorted items to search.
-    * @param value The value to located in the array.
-    * @param compare The value comparison function.
-    * @returns The index of the found item, or -1.
-    */
-    export function binarySearch<T, U>(array: T[], value: U, compare: ICompare<T, U>): number {
-        var index = lowerBound(array, value, compare);
-        if (index === array.length) {
-            return -1;
+/**
+* Perform a lower bound search on a sorted array.
+*
+* @param array The array of sorted items to search.
+* @param value The value to located in the array.
+* @param compare The value comparison function.
+* @returns The index of the first element in the array which
+*          compares greater than or equal to the given value.
+*/
+export function lowerBound<T, U>(array: T[], value: U, compare: ICompare<T, U>): number {
+    var begin = 0;
+    var n = array.length;
+    var half;
+    var middle;
+    while (n > 0) {
+        half = n >> 1;
+        middle = begin + half;
+        if (compare(array[middle], value) < 0) {
+            begin = middle + 1;
+            n -= half + 1;
+        } else {
+            n = half;
         }
-        var item = array[index];
-        if (compare(item, value) !== 0) {
-            return -1;
-        }
-        return index;
     }
+    return begin;
+}
 
-    /**
-    * Perform a binary find on a sorted array.
-    *
-    * @param array The array of sorted items to search.
-    * @param value The value to located in the array.
-    * @param compare The value comparison function.
-    * @returns The found item in the array, or undefined.
-    */
-    export function binaryFind<T, U>(array: T[], value: U, compare: ICompare<T, U>): T {
-        var index = lowerBound(array, value, compare);
-        if (index === array.length) {
-            return undefined;
-        }
-        var item = array[index];
-        if (compare(item, value) !== 0) {
-            return undefined;
-        }
-        return item;
+/**
+* Perform a binary search on a sorted array.
+*
+* @param array The array of sorted items to search.
+* @param value The value to located in the array.
+* @param compare The value comparison function.
+* @returns The index of the found item, or -1.
+*/
+export function binarySearch<T, U>(array: T[], value: U, compare: ICompare<T, U>): number {
+    var index = lowerBound(array, value, compare);
+    if (index === array.length) {
+        return -1;
     }
-
-    export function asSet<T>(items: T[] | IIterable<T>, compare: ICompare<T, T>): T[] {
-        var array = asArray(items);
-        var n = array.length;
-        if (n <= 1) {
-            return array;
-        }
-        array.sort(compare);
-        var result = [array[0]];
-        for (var i = 1, j = 0; i < n; ++i) {
-            var item = array[i];
-            if (compare(result[j], item) !== 0) {
-                result.push(item);
-                ++j;
-            }
-        }
-        return result;
+    var item = array[index];
+    if (compare(item, value) !== 0) {
+        return -1;
     }
+    return index;
+}
 
-    /**
-    * Test whether a two sorted arrays sets are disjoint.
-    *
-    * @param first The first sorted array set.
-    * @param second The second sorted array set.
-    * @param compare The value comparison function.
-    * @returns true if the sets are disjoint, false otherwise.
-    */
-    export function setIsDisjoint<T>(first: T[], second: T[], compare: ICompare<T, T>): boolean {
-        var i = 0, j = 0;
-        var len1 = first.length;
-        var len2 = second.length;
-        while (i < len1 && j < len2) {
-            var v = compare(first[i], second[j]);
-            if (v < 0) {
-                ++i;
-            } else if (v > 0) {
-                ++j;
-            } else {
-                return false;
-            }
-        }
-        return true;
+/**
+* Perform a binary find on a sorted array.
+*
+* @param array The array of sorted items to search.
+* @param value The value to located in the array.
+* @param compare The value comparison function.
+* @returns The found item in the array, or undefined.
+*/
+export function binaryFind<T, U>(array: T[], value: U, compare: ICompare<T, U>): T {
+    var index = lowerBound(array, value, compare);
+    if (index === array.length) {
+        return undefined;
     }
-
-    /**
-    * Test whether one sorted array set is the subset of another.
-    *
-    * @param first The potential subset.
-    * @param second The potential superset.
-    * @param compare The value comparison function.
-    * @returns true if the first set is a subset of the second.
-    */
-    export function setIsSubset<T>(first: T[], second: T[], compare: ICompare<T, T>): boolean {
-        var len1 = first.length;
-        var len2 = second.length;
-        if (len1 > len2) {
-            return false;
-        }
-        var i = 0, j = 0;
-        while (i < len1 && j < len2) {
-            var v = compare(first[i], second[j]);
-            if (v < 0) {
-                return false;
-            } else if (v > 0) {
-                ++j;
-            } else {
-                ++i;
-                ++j;
-            }
-        }
-        if (i < len1) {
-            return false;
-        }
-        return true;
+    var item = array[index];
+    if (compare(item, value) !== 0) {
+        return undefined;
     }
+    return item;
+}
 
-    /**
-    * Create the set union of two sorted set arrays.
-    var j = 0;
-    *
-    * @param first The first sorted array set.
-    * @param second The second sorted array set.
-    * @param compare The value comparison function.
-    * @returns The set union of the two arrays.
-    */
-    export function setUnion<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
-        var i = 0, j = 0;
-        var len1 = first.length;
-        var len2 = second.length;
-        var merged = [];
-        while (i < len1 && j < len2) {
-            var a = first[i];
-            var b = second[j];
-            var v = compare(a, b);
-            if (v < 0) {
-                merged.push(a);
-                ++i;
-            } else if (v > 0) {
-                merged.push(b);
-                ++j;
-            } else {
-                merged.push(a);
-                ++i;
-                ++j;
-            }
-        }
-        while (i < len1) {
-            merged.push(first[i]);
-            ++i;
-        }
-        while (j < len2) {
-            merged.push(second[j]);
+export function asSet<T>(items: T[] | IIterable<T>, compare: ICompare<T, T>): T[] {
+    var array = asArray(items);
+    var n = array.length;
+    if (n <= 1) {
+        return array;
+    }
+    array.sort(compare);
+    var result = [array[0]];
+    for (var i = 1, j = 0; i < n; ++i) {
+        var item = array[i];
+        if (compare(result[j], item) !== 0) {
+            result.push(item);
             ++j;
         }
-        return merged;
     }
+    return result;
+}
 
-    /**
-    * Create a set intersection of two sorted set arrays.
-    *
-    * @param first The first sorted array set.
-    * @param second The second sorted array set.
-    * @param compare The value comparison function.
-    * @returns The set intersection of the two arrays.
-    */
-    export function setIntersection<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
-        var i = 0, j = 0;
-        var len1 = first.length;
-        var len2 = second.length;
-        var merged = [];
-        while (i < len1 && j < len2) {
-            var a = first[i];
-            var b = second[j];
-            var v = compare(a, b);
-            if (v < 0) {
-                ++i;
-            } else if (v > 0) {
-                ++j;
-            } else {
-                merged.push(a);
-                ++i;
-                ++j;
-            }
-        }
-        return merged;
-    }
-
-    /**
-    * Create a set difference of two sorted set arrays.
-    *
-    * @param first The first sorted array set.
-    * @param second The second sorted array set.
-    * @param compare The value comparison function.
-    * @returns The set difference of the two arrays.
-    */
-    export function setDifference<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
-        var i = 0, j = 0;
-        var len1 = first.length;
-        var len2 = second.length;
-        var merged = [];
-        while (i < len1 && j < len2) {
-            var a = first[i];
-            var b = second[j];
-            var v = compare(a, b);
-            if (v < 0) {
-                merged.push(a);
-                ++i;
-            } else if (v > 0) {
-                ++j;
-            } else {
-                ++i;
-                ++j;
-            }
-        }
-        while (i < len1) {
-            merged.push(first[i]);
+/**
+* Test whether a two sorted arrays sets are disjoint.
+*
+* @param first The first sorted array set.
+* @param second The second sorted array set.
+* @param compare The value comparison function.
+* @returns true if the sets are disjoint, false otherwise.
+*/
+export function setIsDisjoint<T>(first: T[], second: T[], compare: ICompare<T, T>): boolean {
+    var i = 0, j = 0;
+    var len1 = first.length;
+    var len2 = second.length;
+    while (i < len1 && j < len2) {
+        var v = compare(first[i], second[j]);
+        if (v < 0) {
             ++i;
+        } else if (v > 0) {
+            ++j;
+        } else {
+            return false;
         }
-        return merged;
     }
+    return true;
+}
 
-    /**
-    * Create a set symmetric difference of two sorted set arrays.
-    *
-    * @param first The first sorted array set.
-    * @param second The second sorted array set.
-    * @param compare The value comparison function.
-    * @returns The set symmetric difference of the two arrays.
-    */
-    export function setSymmetricDifference<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
-        var i = 0, j = 0;
-        var len1 = first.length;
-        var len2 = second.length;
-        var merged = [];
-        while (i < len1 && j < len2) {
-            var a = first[i];
-            var b = second[j];
-            var v = compare(a, b);
-            if (v < 0) {
-                merged.push(a);
-                ++i;
-            } else if (v > 0) {
-                merged.push(b);
-                ++j;
-            } else {
-                ++i;
-                ++j;
-            }
-        }
-        while (i < len1) {
-            merged.push(first[i]);
+/**
+* Test whether one sorted array set is the subset of another.
+*
+* @param first The potential subset.
+* @param second The potential superset.
+* @param compare The value comparison function.
+* @returns true if the first set is a subset of the second.
+*/
+export function setIsSubset<T>(first: T[], second: T[], compare: ICompare<T, T>): boolean {
+    var len1 = first.length;
+    var len2 = second.length;
+    if (len1 > len2) {
+        return false;
+    }
+    var i = 0, j = 0;
+    while (i < len1 && j < len2) {
+        var v = compare(first[i], second[j]);
+        if (v < 0) {
+            return false;
+        } else if (v > 0) {
+            ++j;
+        } else {
             ++i;
-        }
-        while (j < len2) {
-            merged.push(second[j]);
             ++j;
         }
-        return merged;
     }
+    if (i < len1) {
+        return false;
+    }
+    return true;
+}
+
+/**
+* Create the set union of two sorted set arrays.
+var j = 0;
+*
+* @param first The first sorted array set.
+* @param second The second sorted array set.
+* @param compare The value comparison function.
+* @returns The set union of the two arrays.
+*/
+export function setUnion<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
+    var i = 0, j = 0;
+    var len1 = first.length;
+    var len2 = second.length;
+    var merged = [];
+    while (i < len1 && j < len2) {
+        var a = first[i];
+        var b = second[j];
+        var v = compare(a, b);
+        if (v < 0) {
+            merged.push(a);
+            ++i;
+        } else if (v > 0) {
+            merged.push(b);
+            ++j;
+        } else {
+            merged.push(a);
+            ++i;
+            ++j;
+        }
+    }
+    while (i < len1) {
+        merged.push(first[i]);
+        ++i;
+    }
+    while (j < len2) {
+        merged.push(second[j]);
+        ++j;
+    }
+    return merged;
+}
+
+/**
+* Create a set intersection of two sorted set arrays.
+*
+* @param first The first sorted array set.
+* @param second The second sorted array set.
+* @param compare The value comparison function.
+* @returns The set intersection of the two arrays.
+*/
+export function setIntersection<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
+    var i = 0, j = 0;
+    var len1 = first.length;
+    var len2 = second.length;
+    var merged = [];
+    while (i < len1 && j < len2) {
+        var a = first[i];
+        var b = second[j];
+        var v = compare(a, b);
+        if (v < 0) {
+            ++i;
+        } else if (v > 0) {
+            ++j;
+        } else {
+            merged.push(a);
+            ++i;
+            ++j;
+        }
+    }
+    return merged;
+}
+
+/**
+* Create a set difference of two sorted set arrays.
+*
+* @param first The first sorted array set.
+* @param second The second sorted array set.
+* @param compare The value comparison function.
+* @returns The set difference of the two arrays.
+*/
+export function setDifference<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
+    var i = 0, j = 0;
+    var len1 = first.length;
+    var len2 = second.length;
+    var merged = [];
+    while (i < len1 && j < len2) {
+        var a = first[i];
+        var b = second[j];
+        var v = compare(a, b);
+        if (v < 0) {
+            merged.push(a);
+            ++i;
+        } else if (v > 0) {
+            ++j;
+        } else {
+            ++i;
+            ++j;
+        }
+    }
+    while (i < len1) {
+        merged.push(first[i]);
+        ++i;
+    }
+    return merged;
+}
+
+/**
+* Create a set symmetric difference of two sorted set arrays.
+*
+* @param first The first sorted array set.
+* @param second The second sorted array set.
+* @param compare The value comparison function.
+* @returns The set symmetric difference of the two arrays.
+*/
+export function setSymmetricDifference<T>(first: T[], second: T[], compare: ICompare<T, T>): T[] {
+    var i = 0, j = 0;
+    var len1 = first.length;
+    var len2 = second.length;
+    var merged = [];
+    while (i < len1 && j < len2) {
+        var a = first[i];
+        var b = second[j];
+        var v = compare(a, b);
+        if (v < 0) {
+            merged.push(a);
+            ++i;
+        } else if (v > 0) {
+            merged.push(b);
+            ++j;
+        } else {
+            ++i;
+            ++j;
+        }
+    }
+    while (i < len1) {
+        merged.push(first[i]);
+        ++i;
+    }
+    while (j < len2) {
+        merged.push(second[j]);
+        ++j;
+    }
+    return merged;
 }

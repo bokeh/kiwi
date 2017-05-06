@@ -6,6 +6,7 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
+import {forEach, Pair} from "./tsu"
 import {Variable} from "./variable"
 import {IMap, createMap} from "./maptype"
 
@@ -59,7 +60,7 @@ export class Expression
     get value(): number
     {
         var result = this._constant;
-        tsu.forEach<tsu.Pair<Variable, number>>(this._terms, (pair) => {
+        forEach<Pair<Variable, number>>(this._terms, (pair) => {
             result += pair.first.value * pair.second;
         });
         return result;

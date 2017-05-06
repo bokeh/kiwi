@@ -6,42 +6,40 @@
 | The full license is in the file COPYING.txt, distributed with this software.
 |----------------------------------------------------------------------------*/
 
-module tsu {
+/**
+* An interface which defines a binary comparison function.
+*
+* Returns:
+*   - zero if first = second
+*   - negative if first < second
+*   - positive if first > second.
+*/
+export interface ICompare<T, U> {
+    (first: T, second: U): number;
+}
+
+/**
+* A class which defines a generic pair object.
+*/
+export class Pair<T, U> {
+
+    public first: T;
+    public second: U;
+
     /**
-    * An interface which defines a binary comparison function.
+    * Construct a new Pair object.
     *
-    * Returns:
-    *   - zero if first = second
-    *   - negative if first < second
-    *   - positive if first > second.
+    * @param first The first item of the pair.
+    * @param second The second item of the pair.
     */
-    export interface ICompare<T, U> {
-        (first: T, second: U): number;
+    constructor(first: T, second: U) {
+        this.first = first;
+        this.second = second;
     }
-
     /**
-    * A class which defines a generic pair object.
+    * Create a copy of the pair.
     */
-    export class Pair<T, U> {
-
-        public first: T;
-        public second: U;
-
-        /**
-        * Construct a new Pair object.
-        *
-        * @param first The first item of the pair.
-        * @param second The second item of the pair.
-        */
-        constructor(first: T, second: U) {
-            this.first = first;
-            this.second = second;
-        }
-        /**
-        * Create a copy of the pair.
-        */
-        public copy(): Pair<T, U> {
-            return new Pair(this.first, this.second);
-        }
+    public copy(): Pair<T, U> {
+        return new Pair(this.first, this.second);
     }
 }
