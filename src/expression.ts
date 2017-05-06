@@ -28,7 +28,7 @@ export class Expression
      *
      * The parameters are summed. The tuples are multiplied.
      */
-    constructor( ...args: any[] );
+    constructor( ...args: (number | Variable | [number, Variable])[] );
     constructor()
     {
         var parsed = parseArgs( arguments );
