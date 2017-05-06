@@ -1,0 +1,20 @@
+{
+  "name": "kiwi",
+  "version": "0.1.0",
+  "description": "Kiwi is an efficient implementation of the Cassowary constraint solving algorithm.",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nucleic/kiwi.git"
+  },
+  "devDependencies": {
+    "typescript": "^2.3.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "build": "./node_modules/.bin/tsc"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts"
+}
