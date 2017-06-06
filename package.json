@@ -8,10 +8,10 @@
     "type": "git",
     "url": "https://github.com/nucleic/kiwi.git"
   },
-  "devDependencies": {
+  "dependencies": {
     "typescript": "^2.3.0"
   },
-  "dependencies": {},
+  "devDependencies": {},
   "scripts": {
     "build": "./node_modules/.bin/tsc"
   },
