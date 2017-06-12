@@ -55,6 +55,18 @@ export class Constraint
         this._strength = Strength.clip( strength );
     }
 
+    toString(): string {
+      const op = () => {
+        switch (this._operator) {
+          case Operator.Le: return "<="
+          case Operator.Ge: return ">="
+          case Operator.Eq: return "=="
+        }
+      }
+
+      return `${this._expression} ${op()} 0`
+    }
+
     /**
      * Returns the unique id number of the constraint.
      */

@@ -36,6 +36,45 @@ export class Expression
         this._constant = parsed.constant;
     }
 
+    toString(): string {
+        const terms: [Variable, number][] = []
+        forEach<Pair<Variable, number>>(this._terms, (pair) => {
+            terms.push([pair.first, pair.second])
+        });
+
+        let first = true
+        let s = ""
+
+        for (const [v, c] of terms) {
+          if (first) {
+            first = false
+            if (c == 1)
+              s += `${v}`
+            else if (c == -1)
+              s += `-${v}`
+            else
+              s += `${c}*${v}`
+          } else {
+            if (c == 1)
+              s += ` + ${v}`
+            else if (c == -1)
+              s += ` - ${v}`
+            else if (c >= 0)
+              s += ` + ${c}${v}`
+            else
+              s += ` - ${-c}${v}`
+          }
+        }
+
+        const c = this.constant
+        if (c < 0)
+          s += ` - ${-c}`
+        else if (c > 0)
+          s += ` + ${c}`
+
+        return s
+    }
+
     /**
      * Returns the mapping of terms in the expression.
      *

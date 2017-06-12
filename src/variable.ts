@@ -21,6 +21,10 @@ export class Variable
         return a.id - b.id;
     }
 
+    toString(): string {
+      return this._name
+    }
+
     /**
      * Construct a new Variable
      *
