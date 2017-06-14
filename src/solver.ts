@@ -11,6 +11,7 @@ import {Expression} from "./expression"
 import {Constraint, Operator} from "./constraint"
 import {Strength} from "./strength"
 import {IMap, createMap} from "./maptype"
+import {forEach, Pair} from "./tsu"
 
 /**
  * The constraint solver class.
@@ -267,6 +268,14 @@ export class Solver
                 pair.first.setValue( 0.0 );
             }
         }
+    }
+
+    getConstraints(): Constraint[] {
+      const constraints: Constraint[] = []
+      forEach<Pair<Constraint, any>>(this._cnMap, (pair) => {
+        constraints.push(pair.first)
+      })
+      return constraints
     }
 
     get numConstraints(): number {
