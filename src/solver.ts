@@ -251,23 +251,26 @@ export class Solver
     /**
      * Update the values of the variables.
      */
-    updateVariables(): void
-    {
-        var vars = this._varMap;
-        var rows = this._rowMap;
-        for( var i = 0, n = vars.size(); i < n; ++i )
-        {
-            var pair = vars.itemAt( i );
-            var rowPair = rows.find( pair.second );
-            if( rowPair !== undefined )
-            {
-                pair.first.setValue( rowPair.second.constant() );
-            }
-            else
-            {
-                pair.first.setValue( 0.0 );
-            }
+    updateVariables(): void {
+      const vars = this._varMap
+      const rows = this._rowMap
+
+      for (let i = 0, n = vars.size(); i < n; ++i) {
+        const pair = vars.itemAt(i)
+        const rowPair = rows.find(pair.second)
+
+        let c = 0
+        if (rowPair !== undefined) {
+          c = rowPair.second.constant()
+
+          // Normalize -0 to 0. Note that c === -0 is the same as c === 0, so we set c to zero
+          // for both kinds of zeros. One would preferably use Object.is(c, -0), but that's not
+          // widely supported yet.
+          if (c === -0)
+            c = 0
         }
+        pair.first.setValue(c)
+      }
     }
 
     getConstraints(): Constraint[] {
